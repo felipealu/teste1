@@ -142,7 +142,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="/js/leitor.js"></script>
+    <script src="leitor.js"></script>
 
     <script>
     // Função para redirecionar para a página do gerador
