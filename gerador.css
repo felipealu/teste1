@@ -1,0 +1,184 @@
+/* Estilo Geral */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, rgb(37, 81, 46), rgb(14, 48, 19));
+  margin: 0;
+  padding: 110px;
+  text-align: center;
+  height: 40vh;
+  color: #444040;
+}
+
+#irparaleitor {
+  background-color: #638876;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 20%;
+  margin-top: 2px;
+}
+
+#irparaleitor:hover {
+  background-color: #63f58f;
+}
+
+/* Título Principal */
+h1 {
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Mensagem de saída */
+#outputData {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Estilo do formulário */
+#cadastro {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 30px 55px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+#cadastro h3 {
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+#cadastro form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Estilo dos rótulos e campos de entrada */
+#cadastro label {
+  font-size: 14px;
+  color: #424141;
+  margin-bottom: 1px;
+  align-self: flex-start;
+}
+
+#cadastro input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  background-color: #f0eded;
+}
+
+/* Estilo do botão de cadastro */
+#register {
+  background-color: #557e65;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 29%;
+  margin-top: 7vh;
+  margin-bottom: 20px;
+}
+
+#register:hover {
+  background-color: #63f58f;
+}
+
+.label-animado {
+  transition: transform 0.2s ease-in-out;
+}
+
+.label-animado.focado {
+  transform: translateY(-10px);
+  font-size: 12px;
+}
+
+#gerar {
+  background-color: #557e65;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 21%;
+  margin-bottom: 1px;
+}
+
+#gerar:hover {
+  background-color: #63f58f;
+}
+
+#check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#sit_escola {
+  margin-right: 20vh;
+}
+
+#check label[for="sit_escola"] {
+  margin-top: 1.4vh;
+}
+
+#qrcode {
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  #cadastro {
+    padding: 15px;
+  }
+
+  #cadastro h3 {
+    font-size: 18px;
+  }
+
+  #cadastro input[type="text"] {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #register {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

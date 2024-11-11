@@ -1,0 +1,263 @@
+/* Estilo Geral */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, rgb(37, 81, 46), rgb(14, 48, 19));
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* Título Principal */
+h1 {
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Estilo do vídeo */
+video {
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Canvas oculto */
+canvas {
+  display: none;
+}
+
+#irparagerar {
+  background-color: #638876;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 20%;
+  margin-top: 15px;
+}
+
+#irparagerar:hover {
+  background-color: #63f58f;
+}
+/* Mensagem de saída */
+#outputData {
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Estilo do formulário */
+#cadastro {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 30px 50px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+#cadastro h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#cadastro form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Estilo dos rótulos e campos de entrada */
+#cadastro label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 1px;
+  align-self: flex-start;
+}
+
+#cadastro input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  background-color: #dadada;
+}
+
+#relatorio {
+  cursor: pointer;
+
+  position: absolute;
+  width: 100px;
+  color: #ffffff;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin-top: 750px;
+  margin-right: 150px;
+  box-sizing: border-box;
+  background-color: #557e65;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+#relatorio:hover {
+  background-color: #63f58f;
+}
+#saida {
+  cursor: pointer;
+  position: absolute;
+  width: 100px;
+  color: #ffffff;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin-top: 750px;
+  margin-left: 150px;
+  box-sizing: border-box;
+  background-color: #557e65;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+#saida:hover {
+  background-color: #63f58f;
+}
+
+#pesquisar {
+  display: flex;
+  position: absolute;
+  cursor: pointer;
+  padding: 15px;
+  margin-top: 97px;
+  margin-left: 550px;
+  border-radius: 10px;
+  color: #ffffff;
+  background-color: #557e65;
+  border: none;
+}
+
+#pesquisar:hover {
+  background-color: #2b3d30;
+}
+
+.label-animado {
+  transition: transform 0.2s ease-in-out;
+}
+
+.label-animado.focado {
+  transform: translateY(-10px);
+  font-size: 12px;
+}
+
+#sugestoes {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.829);
+  border: 1px solid #838383;
+  padding: 10px;
+  width: 300px;
+  margin: 58px;
+  margin-left: -20px;
+  border-radius: 2px;
+}
+
+#sugestoes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sugestoes li {
+  padding: 10px;
+  border-bottom: 1px solid #3f3e3e;
+  cursor: pointer;
+}
+
+#sugestoes li:hover {
+  background-color: #abd6b9;
+}
+
+/* Estilo do botão de cadastro */
+#register {
+  background-color: #557e65;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+#register:hover {
+  background-color: #63f58f;
+}
+
+#check {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#check input[id="sit_escola"] {
+  margin-right: 10px;
+}
+
+#check label {
+  margin-top: 1vh;
+}
+
+#rua {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  #cadastro {
+    padding: 15px;
+  }
+
+  #cadastro h3 {
+    font-size: 18px;
+  }
+
+  #cadastro input[type="text"] {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #register {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

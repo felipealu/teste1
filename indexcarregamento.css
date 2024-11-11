@@ -1,0 +1,25 @@
+body {
+  background: linear-gradient(to right, rgb(31, 68, 39), rgb(17, 56, 22));
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+#carregando {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 10px solid #ccc;
+  border-top-color: #333;
+  animation: carregando 1s linear infinite;
+}
+@keyframes carregando {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

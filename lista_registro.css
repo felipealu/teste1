@@ -1,0 +1,73 @@
+body {
+  background: linear-gradient(to right, rgb(57, 99, 65), rgb(17, 56, 22));
+  color: white;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow-x: hidden;
+}
+.navbar {
+  background: linear-gradient(to right, rgb(21, 85, 33), rgb(9, 32, 12));
+}
+.table-bg {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px 15px 0 0;
+  height: auto;
+  word-wrap: break-word;
+  white-space: normal;
+  /* Adicione as seguintes propriedades para tornar o estilo responsivo */
+  max-width: 100%;
+  width: 100%;
+  padding: 10px;
+  margin: 10px auto;
+  box-sizing: border-box;
+}
+
+.box-search {
+  display: flex;
+  justify-content: center;
+  gap: 0.1%;
+}
+#btn-search {
+  background-color: #557e65;
+  border: none;
+}
+
+#btn-search:hover {
+  background-color: #63f58f;
+}
+
+/* Adicione as seguintes regras para dispositivos móveis */
+@media (max-width: 768px) {
+  .table-bg {
+    border-radius: 5px 5px 0 0;
+    padding: 2px;
+    margin: 2px auto;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    transform: scale(0.8);
+    transform-origin: top left;
+    zoom: 0.8;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    background-size: 100% 100%;
+    background-position: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+  .navbar > * {
+    width: 100%;
+  }
+}
