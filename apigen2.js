@@ -15,6 +15,12 @@ document.addEventListener("keypress", (e) => {
   }
 });
 
+// Adiciona evento de input ao campo cel para adicionar o código de país (+55) automaticamente
+cel.addEventListener("input", function() {
+  const phoneNumber = cel.value.replace(/^\+55/, "");
+  cel.value = "+55" + phoneNumber.replace(/\D+/g, "");
+});
+
 gerarButton.addEventListener("click", () => {
   console.log("Botão de gerar clicado");
   genQRCode();
