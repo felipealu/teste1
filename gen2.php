@@ -35,7 +35,7 @@
             $sit_service = 0;
         }
         
-        $result = mysqli_query($conexao, "INSERT INTO usuarios (idcadastro, nome, identificacao, veiculo, placa, celular, sit_escola, sit_service) VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$celular', '$sit_escola', '$sit_service')");
+        $result = mysqli_query($conexao, "INSERT INTO cadastros (idcadastro, nome, identificacao, veiculo, placa, celular, sit_escola, sit_service) VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$celular', '$sit_escola', '$sit_service')");
     
         // if (!$result) {
         //     die("Erro ao inserir dados: " . mysqli_error($conexao));
@@ -103,8 +103,8 @@
     <script src=" https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/dist/qrcode.min.js"></script>
-    <script src="/js/apigen2.js"></script>
-    <script src="/js/arraygen2.js"></script>
+    <script src="apigen2.js"></script>
+    <script src="arraygen2.js"></script>
 
     <script>
     // Função para redirecionar para a página do gerador
