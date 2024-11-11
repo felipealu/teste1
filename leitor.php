@@ -53,7 +53,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="qr-code-scan-svgrepo-com.svg">
     <title>Leitor de QR Code com Cadastro</title>
     <link rel="stylesheet" href="/css/leitor.css" />
 </head>
@@ -142,7 +141,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="leitor.js"></script>
+    <script src="/js/leitor.js"></script>
 
     <script>
     // Função para redirecionar para a página do gerador
