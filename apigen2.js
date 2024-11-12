@@ -15,11 +15,15 @@ document.addEventListener("keypress", (e) => {
   }
 });
 
-// Adiciona evento de input ao campo cel para adicionar o código de país (+55) automaticamente
-cel.addEventListener("input", function() {
-  const phoneNumber = cel.value.replace(/^\+55/, "");
-  cel.value = "+55" + phoneNumber.replace(/\D+/g, "");
+cel.addEventListener("input", () => {
+  const valor = cel.value;
+  if (!valor.startsWith("+55")) {
+    cel.value = `+55${valor.replace(/[^0-9]/g, "")}`;
+  } else {
+    cel.value = `+55${valor.replace(/^\+55/, "").replace(/[^0-9]/g, "")}`;
+  }
 });
+
 
 gerarButton.addEventListener("click", () => {
   console.log("Botão de gerar clicado");
@@ -61,7 +65,7 @@ function genQRCode() {
 }
 
 function sendwhatsapp() {
-  const phonenumber = cel.value && /^\d+$/.test(cel.value) ? "+55" + cel.value : "";
+  const phonenumber = cel.value 
 
   // Pegar a imagem
   const imagem = document.getElementById("qrcode");
