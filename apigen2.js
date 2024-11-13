@@ -8,13 +8,7 @@ const sitService = document.querySelector("#sit_service");
 const qrcode = document.querySelector("#qrcode");
 const gerarButton = document.querySelector("#gerar");
 
-//eventos de mecanismos de crianção do QRCode
-document.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    genQRCode();
-  }
-});
-
+// Adicione um evento de input para manipular o valor do campo de celular
 cel.addEventListener("input", () => {
   const valor = cel.value;
   if (!valor.startsWith("+55")) {
@@ -24,6 +18,12 @@ cel.addEventListener("input", () => {
   }
 });
 
+//eventos de mecanismos de crianção do QRCode
+document.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    genQRCode();
+  }
+});
 
 gerarButton.addEventListener("click", () => {
   console.log("Botão de gerar clicado");
@@ -64,8 +64,10 @@ function genQRCode() {
   console.log("QRCode gerado:", qrcode.src);
 }
 
+// ...
+
 function sendwhatsapp() {
-  const phonenumber = cel.value 
+  const phonenumber = cel.value;
 
   // Pegar a imagem
   const imagem = document.getElementById("qrcode");
@@ -103,7 +105,24 @@ function sendwhatsapp() {
       .then((response) => response.text())
       .then((shortenedUrl) => {
         const mensagem = "Segue o QR Code para escaneamento: ";
-        const whatsappUrl = `https://wa.me/${phonenumber}?text=${mensagem}${shortenedUrl}`;
+        const textoInstrucoes = `
+**Importante: Utilização Segura do Link do QR Code**
+
+* Apresente sua identificação (CPF, RG ou outro documento de identificação) junto com o QR Code.
+* Acesse o link do QR Code utilizando um dispositivo seguro e conectado à internet.
+* Escaneie o QR Code utilizando um leitor de QR Code seguro.
+* Siga as instruções para concluir o processo de cadastro.
+
+**Lembre-se**
+
+* Apresente a identificação junto com o QR Code para garantir a segurança do processo de cadastro.
+* Acesse o link do QR Code utilizando um dispositivo seguro e conectado à internet.
+`;
+
+        const mensagemCompleta = mensagem + textoInstrucoes + shortenedUrl;
+        const whatsappUrl = `https://wa.me/${phonenumber}?text=${mensagemCompleta}`;
+
+        // Enviar o link do QR Code com o texto de instruções para o WhatsApp
         window.open(whatsappUrl, "_blank").focus();
       });
   };
