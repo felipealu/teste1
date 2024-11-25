@@ -99,8 +99,8 @@ while($user_data = mysqli_fetch_assoc($result)) {
     $pdf->Cell(7, 10, $user_data['numero'], 1, 0, 'L',false); // Coluna 6
     $pdf->Cell(31.5, 10, date('d/m/Y H:i', strtotime($user_data['entrada'])), 1, 0, 'L'); // Coluna 7
     $pdf->Cell(31.5, 10, date('d/m/Y H:i', strtotime($user_data['saida'])), 1, 0, 'L'); // Coluna 8
-    $pdf->Cell(20, 10, $user_data['sit_escola'], 1, 0, 'L', false); // Coluna 9 (ao lado da saida)
-    $pdf->Cell(18, 10, $user_data['sit_service'], 1, 1, 'L', false); // Coluna 10 (ao lado da saida)
+    $pdf->Cell(20, 10, ($user_data['sit_escola'] == 1) ? 'Sim' : 'Não', 1, 0, 'L', false); // Coluna 9 (ao lado da saida)
+    $pdf->Cell(18, 10, ($user_data['sit_service'] == 1) ? 'Sim' : 'Não', 1, 1, 'L', false); // Coluna 10 (ao lado da saida)
 }
 
 $pdf->Output('relatorio.pdf', 'I');
