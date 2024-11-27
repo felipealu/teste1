@@ -1,0 +1,17 @@
+{
+  "name": "celke/celke",
+  "autoload": {
+    "psr-4": {
+      "Celke\\Celke\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Felipe Aluizio",
+      "email": "felipe.alu@gmail.com"
+    }
+  ],
+  "require": {
+    "mpdf/mpdf": "^8.1"
+  }
+}
