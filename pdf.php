@@ -1,9 +1,8 @@
 <?php
-require_once 'tcpdf/tcpdf.php';
-
+ob_start();
 session_start();
+include_once('./vendor/autoload.php');
 include_once('config.php');
-// print_r($_SESSION);
 ;
     
 // $logado = $_SESSION['nome'];
@@ -21,88 +20,88 @@ if(!empty($_GET['data']))
 }
 else
 {
-    $sql = "SELECT * FROM relatorio ORDER BY saida DESC";
+    $sql = "SELECT * FROM relatorio ORDER BY saida ASC";
 }
 $result = $conexao->query($sql);
-    
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Seu Nome');
-$pdf->SetTitle('Relatório de Registros');
-$pdf->SetMargins(1, 20, 1, 20);
+$mpdf = new \Mpdf\Mpdf(['orientation' => 'L']);
 
-$pdf->SetSubject('Relatório');
-$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+// Define o cabeçalho do relatório
+$mpdf->SetHTMLHeader('<h2 style="text-align: center; font-size: 11pt;">Relatório de entrada e saída de visitantes da Vila Militar São Lázaro do serviço do dia ' . date('d/m/Y', strtotime($_GET['data'])) . ' para o dia ' . date('d/m/Y', strtotime($_GET['data'] . ' +1 day')) . '</h2>');$mpdf->SetMargins(20, 20, 35);
 
-// Obtem a data selecionada pelo botão de gerar relatório
-$data_selecionada = $_GET['data']; // ou $_GET['data_selecionada'], dependendo de como você está enviando a data
+// Obtém a data atual formatada
+$data_atual = date('d') . ' de ' . date('F') . ' de ' . date('Y');
 
-// Converte a data selecionada para o formato Y-m-d
-$data_selecionada = date('Y-m-d', strtotime($data_selecionada));
+// Define o rodapé com a data e o número da página
+$mpdf->SetHTMLFooter('
+    <table style="width: 100%; font-size: 9pt; border-top: 1px solid #000;">
+        <tr>
+            <td style="text-align: left;">Rio de Janeiro, ' . $data_atual . '</td>
+            <td style="text-align: right;">Página {PAGENO}/{nbpg}</td>
+        </tr>
+    </table>
+');
 
-// Calcula a data seguinte adicionando 1 dia à data selecionada
-$data_seguinte = date('d/m/Y', strtotime($data_selecionada . ' +1 day'));
+$html_cabecalho = '<th style="background-color: #e5e5e5;">Nome</th><th style="background-color: #e5e5e5;">Identificação</th><th style="background-color: #e5e5e5;">Veículo</th><th style="background-color: #e5e5e5;">Placa</th><th style="background-color: #e5e5e5;">Rua</th><th style="background-color: #e5e5e5;">Número</th><th style="background-color: #e5e5e5;">Situação Escola</th><th style="background-color: #e5e5e5;">Situação Service</th><th style="background-color: #e5e5e5;">Entrada</th><th style="background-color: #e5e5e5;">Saída</th>';
 
-// Formata a data selecionada para o formato d/m/Y
-$data_selecionada = date('d/m/Y', strtotime($data_selecionada));
-
-// Agora você pode usar as datas selecionada e seguinte para gerar o relatório
-$pdf->SetFont('times', '', 12);
-$pdf->SetHeaderData('', 12, 'Relatório de entrada e saída de visitantes da Vila Militar São Lázaro do serviço do dia ' . $data_selecionada . ' para o dia ' . $data_seguinte, '', array('align' => 'C'));
-$pdf->AddPage('L', 'A4');
-
-// ... resto do código ...
-
-while($user_data = mysqli_fetch_assoc($result)) {
-    $nome_width = $pdf->GetStringWidth($user_data['nome']);
-    if (!isset($max_nome_width) || $nome_width > $max_nome_width) {
-        $max_nome_width = $nome_width;
+$html = '
+<style>
+    body {
+        background-image: url("imagens/logo.jpg"); /* Caminho relativo */
+        background-size: 210mm 297mm;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        min-height: 297mm;
+        transform: scale(1);
+        transform-origin: top left;
     }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<body>
+    <h2 style="text-align: center;">Relatório de entrada e saída</h2>
+    <table>
+        <thead>
+            <tr>' . $html_cabecalho . '</tr>
+        </thead>
+        <tbody>';
+        
+while ($row = $result->fetch_assoc()) {
+    $html .= '<tr>';
+    $html .= '<td>' . $row['nome'] . '</td>';
+    $html .= '<td>' . $row['identificacao'] . '</td>';
+    $html .= '<td>' . $row['veiculo'] . '</td>';
+    $html .= '<td>' . $row['placa'] . '</td>';
+    $html .= '<td>' . $row['rua'] . '</td>';
+    $html .= '<td>' . $row['numero'] . '</td>';
+    $html .= '<td>' . ($row['sit_escola'] == 1 ? 'Sim' : 'Não') . '</td>';
+    $html .= '<td>' . ($row['sit_service'] == 1 ? 'Sim' : 'Não') . '</td>';
+    $html .= '<td>' . date('d/m/Y H:i:s', strtotime($row['entrada'])) . '</td>';
+    $html .= '<td>' . date('d/m/Y H:i:s', strtotime($row['saida'])) . '</td>';
+    $html .= '</tr>';
 }
 
-// Voltar para o início do resultado
-mysqli_data_seek($result, 0);
-// Definir a cor de fundo do cabeçalho
-$pdf->SetFillColor(180, 180, 180); // Cinza claro
+$html .= '
+        </tbody>
+    </table>
+</body>
+';
 
-// Definir a cor do texto do cabeçalho
-$pdf->SetTextColor(50, 50, 50); // Preto escuro
+$mpdf->WriteHTML($html);
 
-$pdf->SetTextColor(0,0,0);
-$pdf->SetFont('times', '', 12);
-// Imprimir o cabeçalho
-$pdf->Cell($max_nome_width , 10, 'Nome', 1, 0, 'C', true); // Coluna 1
-$pdf->Cell(30, 10, 'Identificação', 1, 0, 'C', true); // Coluna 2
-$pdf->Cell(20, 10, 'Veículo', 1, 0, 'C', true); // Coluna 3
-$pdf->Cell(20, 10, 'Placa', 1, 0, 'C', true); // Coluna 4
-$pdf->Cell(65, 10, 'Rua', 1, 0, 'C', true); // Coluna 5
-$pdf->Cell(7, 10, 'N°', 1, 0, 'C', true); // Coluna 6
-$pdf->Cell(31.5, 10, 'Entrada', 1, 0, 'C', true); // Coluna 7
-$pdf->Cell(31.8, 10, 'Saída', 1, 0, 'C', true); // Coluna 8
-$pdf->Cell(20, 10, 'Escola', 1, 0, 'C', true); // Coluna 9 (ao lado da saida)
-$pdf->Cell(18, 10, 'Serviços', 1, 1, 'C', true); // Coluna 10 (ao lado da saida)
-
-
-$pdf->SetTextColor(0,0,0);
-$pdf->SetFont('times', '', 11);
-
-while($user_data = mysqli_fetch_assoc($result)) {
-
-
-    
-    $pdf->Cell($max_nome_width , 10, $user_data['nome'], 1, 0, 'L',false); // Coluna 1
-    $pdf->Cell(30, 10, $user_data['identificacao'], 1, 0, 'L',false); // Coluna 2
-    $pdf->Cell(20, 10, $user_data['veiculo'], 1, 0, 'L',false); // Coluna 3
-    $pdf->Cell(20, 10, $user_data['placa'], 1, 0, 'L',false); // Coluna 4
-    $pdf->Cell(65, 10, $user_data['rua'], 1, 0, 'L',false); // Coluna 5
-    $pdf->Cell(7, 10, $user_data['numero'], 1, 0, 'L',false); // Coluna 6
-    $pdf->Cell(31.5, 10, date('d/m/Y H:i', strtotime($user_data['entrada'])), 1, 0, 'L'); // Coluna 7
-    $pdf->Cell(31.5, 10, date('d/m/Y H:i', strtotime($user_data['saida'])), 1, 0, 'L'); // Coluna 8
-    $pdf->Cell(20, 10, ($user_data['sit_escola'] == 1) ? 'Sim' : 'Não', 1, 0, 'L', false); // Coluna 9 (ao lado da saida)
-    $pdf->Cell(18, 10, ($user_data['sit_service'] == 1) ? 'Sim' : 'Não', 1, 1, 'L', false); // Coluna 10 (ao lado da saida)
-}
-
-$pdf->Output('relatorio.pdf', 'I');
-
+$mpdf->Output('relatorio.pdf', 'I');
 ?>
