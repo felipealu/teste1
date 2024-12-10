@@ -3,14 +3,15 @@ require_once 'config.php';
 
 // Verifica se o formulário foi enviado via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $_POST["nome"];
-    $identificacao = $_POST["identificacao"];
-    $veiculo = $_POST["veiculo"];
-    $placa = $_POST["placa"];
+    // Recebe os dados do formulário e converte para maiúsculas
+    $nome = strtoupper($_POST["nome"]);
+    $identificacao = strtoupper($_POST["identificacao"]);
+    $veiculo = strtoupper($_POST["veiculo"]);
+    $placa = strtoupper($_POST["placa"]);
     
-    // Validação do celular
+    // Validação do celular (em maiúsculas também, se necessário)
     if (!empty($_POST["celular"]) && is_numeric($_POST["celular"])) {
-        $celular = $_POST["celular"];
+        $celular = strtoupper($_POST["celular"]);  // Isso não é necessário para números, mas fica aqui para uniformizar.
     } else {
         $celular = 0; // ou algum outro valor padrão
     }
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Se já existir, exibe um alerta
         echo "<script>alert('Já existe um cadastro com o mesmo nome ou identificação.');</script>";
     } else {
-        // Se não houver duplicação, insere o novo cadastro
+        // Se não houver duplicação, insere o novo cadastro com os dados em maiúsculas
         $insert_query = "INSERT INTO cadastros (idcadastro, nome, identificacao, veiculo, placa, celular, sit_escola, sit_service)
                          VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$celular', '$sit_escola', '$sit_service')";
         $insert_result = mysqli_query($conexao, $insert_query);
@@ -41,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
