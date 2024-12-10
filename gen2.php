@@ -1,47 +1,47 @@
 <?php
+require_once 'config.php';
+
+// Verifica se o formulário foi enviado via POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = $_POST["nome"];
+    $identificacao = $_POST["identificacao"];
+    $veiculo = $_POST["veiculo"];
+    $placa = $_POST["placa"];
     
-    //     print_r($_POST['nome']);
-    //     print_r('<br>');
-    //     print_r($_POST['identificacao']);
-    //     print_r('<br>');
-    //     print_r($_POST['veiculo']);
-    //     print_r('<br>');
-    //
-    require_once 'config.php';
-    // if(!$conexao){
-    //     die("Erro de conexão:" . $conexao->connect_error);
-    // }
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $nome = $_POST["nome"];
-        $identificacao = $_POST["identificacao"];
-        $veiculo = $_POST["veiculo"];
-        $placa = $_POST["placa"];
-    
-        if (!empty($_POST["celular"]) && is_numeric($_POST["celular"])) {
-            $celular = $_POST["celular"];
-        } else {
-            $celular = 0; // ou algum outro valor padrão
-        }
-    
-        if (isset($_POST['sit_escola']) && $_POST['sit_escola'] !== '') {
-            $sit_escola = 1;
-        } else {
-            $sit_escola = 0;
-        }
-        
-        if (isset($_POST['sit_service']) && $_POST['sit_service'] !== '') {
-            $sit_service = 1;
-        } else {
-            $sit_service = 0;
-        }
-        
-        $result = mysqli_query($conexao, "INSERT INTO cadastros (idcadastro, nome, identificacao, veiculo, placa, celular, sit_escola, sit_service) VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$celular', '$sit_escola', '$sit_service')");
-    
-        // if (!$result) {
-        //     die("Erro ao inserir dados: " . mysqli_error($conexao));
-        // }
+    // Validação do celular
+    if (!empty($_POST["celular"]) && is_numeric($_POST["celular"])) {
+        $celular = $_POST["celular"];
+    } else {
+        $celular = 0; // ou algum outro valor padrão
     }
+    
+    // Verificar a situação das opções
+    $sit_escola = isset($_POST['sit_escola']) && $_POST['sit_escola'] !== '' ? 1 : 0;
+    $sit_service = isset($_POST['sit_service']) && $_POST['sit_service'] !== '' ? 1 : 0;
+    
+    // Verificar se já existe um cadastro com o mesmo nome ou identificação
+    $query = "SELECT * FROM cadastros WHERE nome = '$nome' OR identificacao = '$identificacao'";
+    $result = mysqli_query($conexao, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        // Se já existir, exibe um alerta
+        echo "<script>alert('Já existe um cadastro com o mesmo nome ou identificação.');</script>";
+    } else {
+        // Se não houver duplicação, insere o novo cadastro
+        $insert_query = "INSERT INTO cadastros (idcadastro, nome, identificacao, veiculo, placa, celular, sit_escola, sit_service)
+                         VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$celular', '$sit_escola', '$sit_service')";
+        $insert_result = mysqli_query($conexao, $insert_query);
+
+        // Verificar se a inserção foi bem-sucedida
+        if ($insert_result) {
+            echo "<script>alert('Cadastro realizado com sucesso!');</script>";
+        } else {
+            echo "<script>alert('Erro ao realizar o cadastro.');</script>";
+        }
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
