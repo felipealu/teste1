@@ -25,8 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($conexao, $query);
 
     if (mysqli_num_rows($result) > 0) {
-        // Se já existir, exibe um alerta
+        // Se já existir, exibe um alerta e não redireciona
         echo "<script>alert('Já existe um cadastro com o mesmo nome ou identificação.');</script>";
+        echo "<script>window.location.href = 'registro.php';</script>";  // Redireciona para 'registro.php' sem cadastrar
     } else {
         // Se não houver duplicação, insere o novo cadastro com os dados em maiúsculas
         $insert_query = "INSERT INTO cadastros (idcadastro, nome, identificacao, veiculo, placa, celular, sit_escola, sit_service)
@@ -35,13 +36,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificar se a inserção foi bem-sucedida
         if ($insert_result) {
+            // Redireciona para uma página de sucesso ou para 'registro.php'
             echo "<script>alert('Cadastro realizado com sucesso!');</script>";
+            echo "<script>window.location.href = 'registro.php';</script>";  // Redireciona após o cadastro com sucesso
         } else {
             echo "<script>alert('Erro ao realizar o cadastro.');</script>";
         }
     }
 }
 ?>
+
 
 
 
