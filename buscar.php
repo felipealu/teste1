@@ -1,12 +1,13 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "root", "loja1");
+$conn = mysqli_connect("localhost", "root", "admin", "qrvila");
 
 if (isset($_POST["nome"]) && !empty($_POST["nome"])) {
     $nome = $_POST["nome"];
 
     // Verifica se foram digitadas pelo menos três letras
     if (strlen($nome) >= 3) {
-        $query = "SELECT nome FROM usuarios WHERE nome LIKE '%$nome%'";
+        // Modificando a consulta para buscar por nome ou identificação
+        $query = "SELECT nome, identificacao FROM cadastro WHERE nome LIKE '%$nome%' OR identificacao LIKE '%$nome%'";
 
         $result = mysqli_query($conn, $query);
 
