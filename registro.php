@@ -50,6 +50,25 @@
 
     }
     
+    $ultimoRegistro = [
+        'nome' => '',
+        'identificacao' => '',
+        'veiculo' => '',
+        'placa' => '',
+        'rua' => '',
+        'numero' => '',
+        'sit_escola' => 0,
+        'sit_service' => 0,
+    ];
+    
+    if ($conexao) {
+        $query = "SELECT * FROM usuarios ORDER BY idcadastro DESC LIMIT 1";
+        $resultado = mysqli_query($conexao, $query);
+        if ($resultado && mysqli_num_rows($resultado) > 0) {
+            $ultimoRegistro = mysqli_fetch_assoc($resultado);
+        }
+    }
+    
 
 
 ?>
@@ -71,17 +90,9 @@
         <button id="irparagerar">Ir para o Gerador</button>
     </div>
     <h1>Leitor de QR Code e Cadastro</h1>
-    <video id="video" width="200" height="200" autoplay></video>
-    <canvas id="canvas" hidden></canvas>
-    <p id="outputData">Aponte para um QR code</p>
 
-    <!-- Modal -->
-    <!-- Modal -->
-    <div id="modal" style="display: none;">
-        <div class="modal-content">
-            <span id="alerta"></span>
-        </div>
-    </div>
+
+
 
     <!-- Formulário de Cadastro -->
 
@@ -89,17 +100,20 @@
         <h3>Cadastro</h3>
         <form action=" " method="POST">
             <label for="nome" class="label-animado">Nome:</label>
-            <input type="text" id="nome" name="nome" style="text-transform: uppercase;" /><br /><br />
-            <div id="sugestoes"></div>
+            <input type="text" id="nome" name="nome" style="text-transform: uppercase;"
+                value="<?php echo htmlspecialchars($ultimoRegistro['nome']); ?>" /><br /><br />
 
             <label for="identificacao" class="label-animado">Identificação:</label>
-            <input type="text" id="identificacao" name="identificacao" style="text-transform: uppercase;" /><br /><br />
+            <input type="text" id="identificacao" name="identificacao" style="text-transform: uppercase;"
+                value="<?php echo htmlspecialchars($ultimoRegistro['identificacao']); ?>" /><br /><br />
 
             <label for="veiculo" class="label-animado">Veículo:</label>
-            <input type="text" id="veiculo" name="veiculo" style="text-transform: uppercase;" /><br /><br />
+            <input type="text" id="veiculo" name="veiculo" style="text-transform: uppercase;"
+                value="<?php echo htmlspecialchars($ultimoRegistro['veiculo']); ?>" /><br /><br />
 
             <label for="placa" class="label-animado">Placa:</label>
-            <input type="text" id="placa" name="placa" style="text-transform: uppercase;" /><br /><br />
+            <input type="text" id="placa" name="placa" style="text-transform: uppercase;"
+                value="<?php echo htmlspecialchars($ultimoRegistro['placa']); ?>" /><br /><br />
 
             <label for="rua">Escolha uma Rua:</label>
 
@@ -142,14 +156,15 @@
 
             <div id="check">
                 <label for="sit_escola">Cadastro Escolar:</label> <br />
-                <input type="checkbox" id="sit_escola" name="sit_escola" value="true" /><br /><br />
+                <input type="checkbox" id="sit_escola" name="sit_escola" value="true"
+                    <?php echo $ultimoRegistro['sit_escola'] ? "checked" : ""; ?> /><br /><br />
 
                 <label for="sit_service">Cadastro Serviços:</label>
-                <input type="checkbox" id="sit_service" name="sit_service" value="1" /><br /><br />
+                <input type="checkbox" id="sit_service" name="sit_service" value="1"
+                    <?php echo $ultimoRegistro['sit_service'] ? "checked" : ""; ?> /><br /><br />
             </div>
 
-            <br><br><a id="saida" href="lista_registro.php"> Saida</a> <br /><br />
-            <a id="relatorio" href="relatorio.php"> Relatório</a> <br /><br />
+
 
             <input type="hidden" name="token" value="<?php echo uniqid(); ?>" />
             <button type="submit" id="register" nome="submit">Registrar Entrada</button>
@@ -320,6 +335,8 @@
         });
     });
     </script>
+
+
 </body>
 
 </html>
