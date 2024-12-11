@@ -118,6 +118,8 @@
                 <option value="IGREJA">IGREJA</option>
                 <option value="GREMIO">GREMIO</option>
                 <option value="PNRS">PNRS</option>
+                <option value="ESCOLA">ESCOLA</option>
+
 
             </select><br /><br />
 
