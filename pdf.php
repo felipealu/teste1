@@ -67,11 +67,21 @@ $html = '
         border: 1px solid #000;
         padding: 8px;
         text-align: center;
+        white-space: nowrap; /* Evita quebra de linha */
+        overflow: hidden; /* Esconde texto que ultrapassa */
+        text-overflow: ellipsis; /* Adiciona "..." se o texto for longo */
+        font-size: 9pt; /* Define o tamanho padrão da fonte */
     }
     th {
         background-color: #f2f2f2;
     }
+    td {
+        max-width: 150px; /* Ajuste a largura conforme necessário */
+        word-wrap: break-word; /* Para quebra de palavra se necessário */
+        vertical-align: middle; /* Alinha verticalmente */
+    }
 </style>
+
 <body>
     <h2 style="text-align: center;">Relatório de entrada e saída</h2>
     <table>
@@ -81,11 +91,11 @@ $html = '
         <tbody>';
         
 while ($row = $result->fetch_assoc()) {
-    $html .= '<tr>';
-    $html .= '<td>' . $row['nome'] . '</td>';
-    $html .= '<td>' . $row['identificacao'] . '</td>';
-    $html .= '<td>' . $row['veiculo'] . '</td>';
-    $html .= '<td>' . $row['placa'] . '</td>';
+    $html .= '<tr style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">';
+    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['nome'] . '</td>';
+    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['identificacao'] . '</td>';
+    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['veiculo'] . '</td>';
+    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['placa'] . '</td>';
     $html .= '<td>' . $row['rua'] . '</td>';
     $html .= '<td>' . $row['numero'] . '</td>';
     $html .= '<td>' . ($row['sit_escola'] == 1 ? 'Sim' : 'Não') . '</td>';
