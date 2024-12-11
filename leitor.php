@@ -13,12 +13,12 @@
     //     die("Erro de conexão:" . $conexao->connect_error);
     // }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $nome = $_POST["nome"];
-        $identificacao = $_POST["identificacao"];
-        $veiculo = $_POST["veiculo"];
-        $placa = $_POST["placa"];
-        $rua = $_POST["rua"];
-        $numero = $_POST["numero"];
+        $nome = mb_srtoupper($_POST["nome"]);
+        $identificacao = mb_srtoupper($_POST["identificacao"]);
+        $veiculo = mb_srtoupper($_POST["veiculo"]);
+        $placa = mb_srtoupper($_POST["placa"]);
+        $rua = mb_srtoupper($_POST["rua"]);
+        $numero = mb_srtoupper($_POST["numero"]);
         
         if (isset($_POST['sit_escola']) && $_POST['sit_escola'] !== '') {
             $sit_escola = 1;
@@ -31,7 +31,6 @@
         } else {
             $sit_service = 0;
         }
-        
         
     
         $result = mysqli_query($conexao, "INSERT INTO entrada_saida (idcadastro, nome, identificacao, veiculo, placa, rua, numero, sit_escola, sit_service, entrada,saida) VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$rua', '$numero', '$sit_escola', '$sit_service', NOW(), NOW())");
@@ -154,6 +153,25 @@
             window.location.href = "gen2.php";
         });
     </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const checkboxSituacao = document.getElementById("sit_escola");
+        const inputRua = document.getElementById("rua");
+
+        // Adiciona um event listener para detectar mudanças no checkbox
+        checkboxSituacao.addEventListener("change", function() {
+            if (checkboxSituacao.checked) {
+                // Se o checkbox estiver marcado, preenche o campo "Rua" com "ESCOLA"
+                inputRua.value = "ESCOLA";
+            } else {
+                // Se não estiver marcado, limpa o campo "Rua"
+                inputRua.value = "";
+            }
+        });
+    });
+    </script>
+
 
     <script>
     // cadastra individualmente cada informação ao apertar "cadastrar"
