@@ -168,29 +168,7 @@
 
     </script>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        function verificarAtrasos() {
-            fetch('verificar_atraso.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        let mensagem = "Os seguintes cadastros estão atrasados:\n";
-                        data.forEach(atraso => {
-                            mensagem += `- Nome: ${atraso.nome}, Identificação: ${atraso.identificacao}\n`;
-                        });
-                        alert(mensagem);
-                    }
-                })
-                .catch(error => console.error('Erro ao verificar atrasos:', error));
-        }
     
-        // Verifica atrasos a cada 5 segundos
-        setInterval(verificarAtrasos, 5000);
-    });
-    </script>
-
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
         const checkboxSituacao = document.getElementById("sit_escola");
