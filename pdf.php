@@ -3,31 +3,26 @@ ob_start();
 session_start();
 include_once('./vendor/autoload.php');
 include_once('config.php');
-;
 
 // $logado = $_SESSION['nome'];
-if(!empty($_GET['data']))
-{
+if (!empty($_GET['data'])) {
     $data = $_GET['data'];
-    $proxima_data = date('d/m/Y', strtotime($data . ' +1 day'));
-    $hora = '08:00';
+    $proxima_data = date('Y-m-d', strtotime($data . ' +1 day')); // Formata a data corretamente
+    $hora_limite = '08:00:00';
 
-
-    $sql = "SELECT * FROM relatorio WHERE TIMESTAMP(saida) BETWEEN '$data 00:00:00' AND '$proxima_data $hora:00'";
-
-
-    $sql = "SELECT * FROM relatorio WHERE nome LIKE '%$data%' or identificacao LIKE '%$data%' or veiculo LIKE '%$data%' or placa LIKE '%$data%' or rua LIKE '%$data%' or numero LIKE '%$data%' or si>
-}
-else
-{
+    // Consulta SQL para considerar o intervalo até 08:00 do dia seguinte
+    $sql = "SELECT * FROM relatorio 
+            WHERE saida BETWEEN '$data 00:00:00' AND '$proxima_data $hora_limite'";
+} else {
     $sql = "SELECT * FROM relatorio ORDER BY saida ASC";
 }
+
 $result = $conexao->query($sql);
 
 $mpdf = new \Mpdf\Mpdf(['orientation' => 'L']);
 
 // Define o cabeçalho do relatório
-$mpdf->SetHTMLHeader('<h2 style="text-align: center; font-size: 11pt;">Relatório de entrada e saída de visitantes da Vila Militar São Lázaro do serviço do dia ' . date('d/m/Y', strtotime($_GET['da>
+$mpdf->SetHTMLHeader('<h2 style="text-align: center; font-size: 11pt;">Relatório de entrada e saída de visitantes da Vila Militar São Lázaro do serviço do dia ' . date('d/m/Y', strtotime($_GET['data'])) . '</h2>');
 
 // Obtém a data atual formatada
 $data_atual = date('d') . ' de ' . date('F') . ' de ' . date('Y');
@@ -42,23 +37,21 @@ $mpdf->SetHTMLFooter('
     </table>
 ');
 
-$html_cabecalho = '<th style="background-color: #e5e5e5;">Nome</th><th style="background-color: #e5e5e5;">Identificação</th><th style="background-color: #e5e5e5;">Veículo</th><th style="background>
+$html_cabecalho = '
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Nome</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Identificação</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Veículo</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Placa</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Rua</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Número</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Escola</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Serviço</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Entrada</th>
+    <th style="background-color: #e5e5e5; white-space: nowrap;">Saída</th>
+';
 
 $html = '
 <style>
-    body {
-        background-image: url("logo.jpeg"); /* Caminho relativo */
-        background-size: 210mm 297mm;
-        background-position: center;
-        background-repeat: no-repeat;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100vh;
-        min-height: 297mm;
-        transform: scale(1);
-        transform-origin: top left;
-    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -67,18 +60,13 @@ $html = '
         border: 1px solid #000;
         padding: 8px;
         text-align: center;
-        white-space: nowrap; /* Evita quebra de linha */
-        overflow: hidden; /* Esconde texto que ultrapassa */
-        text-overflow: ellipsis; /* Adiciona "..." se o texto for longo */
-        font-size: 9pt; /* Define o tamanho padrão da fonte */
+        font-size: 9pt;
+        white-space: nowrap; /* Garante que todas as informações fiquem na mesma linha */
+        overflow: hidden; /* Evita que o texto ultrapasse os limites */
+        text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
     }
     th {
         background-color: #f2f2f2;
-    }
-    td {
-        max-width: 150px; /* Ajuste a largura conforme necessário */
-        word-wrap: break-word; /* Para quebra de palavra se necessário */
-        vertical-align: middle; /* Alinha verticalmente */
     }
 </style>
 
@@ -92,12 +80,12 @@ $html = '
 
 while ($row = $result->fetch_assoc()) {
     $html .= '<tr>';
-    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['nome'] . '</td>';
-    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['identificacao'] . '</td>';
-    $html .= '<td>' . $row['veiculo'] . '</td>';
-    $html .= '<td>' . $row['placa'] . '</td>';
-    $html .= '<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: smaller;">' . $row['rua'] . '</td>';
-    $html .= '<td>' . $row['numero'] . '</td>';
+    $html .= '<td>' . htmlspecialchars($row['nome']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($row['identificacao']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($row['veiculo']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($row['placa']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($row['rua']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($row['numero']) . '</td>';
     $html .= '<td>' . ($row['sit_escola'] == 1 ? 'Sim' : 'Não') . '</td>';
     $html .= '<td>' . ($row['sit_service'] == 1 ? 'Sim' : 'Não') . '</td>';
     $html .= '<td>' . date('d/m/Y H:i:s', strtotime($row['entrada'])) . '</td>';
@@ -115,4 +103,3 @@ $mpdf->WriteHTML($html);
 
 $mpdf->Output('relatorio.pdf', 'I');
 ?>
-
