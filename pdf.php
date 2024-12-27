@@ -61,9 +61,9 @@ $html = '
         padding: 8px;
         text-align: center;
         font-size: 9pt;
-        white-space: nowrap; /* Garante que todas as informações fiquem na mesma linha */
-        overflow: hidden; /* Evita que o texto ultrapasse os limites */
-        text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     th {
         background-color: #f2f2f2;
@@ -79,10 +79,13 @@ $html = '
         <tbody>';
 
 while ($row = $result->fetch_assoc()) {
+    // Verifica se o veículo está em branco ou nulo
+    $veiculo = !empty($row['veiculo']) ? htmlspecialchars($row['veiculo']) : 'PEDESTRE';
+
     $html .= '<tr>';
     $html .= '<td>' . htmlspecialchars($row['nome']) . '</td>';
     $html .= '<td>' . htmlspecialchars($row['identificacao']) . '</td>';
-    $html .= '<td>' . htmlspecialchars($row['veiculo']) . '</td>';
+    $html .= '<td>' . $veiculo . '</td>';
     $html .= '<td>' . htmlspecialchars($row['placa']) . '</td>';
     $html .= '<td>' . htmlspecialchars($row['rua']) . '</td>';
     $html .= '<td>' . htmlspecialchars($row['numero']) . '</td>';
