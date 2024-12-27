@@ -346,4 +346,4 @@
 
 </html>
 
-quero que adicione o alerta para avisar que o cadastro com o sit_service = 1 no entrada/saida está a mais de 2 segundos sem dar saida 
+
