@@ -1,6 +1,8 @@
 <?php
+
+
     require_once 'config.php';
-    
+
     //     print_r($_POST['nome']);
     //     print_r('<br>');
     //     print_r($_POST['identificacao']);
@@ -12,47 +14,56 @@
     // if(!$conexao){
     //     die("Erro de conexão:" . $conexao->connect_error);
     // }
+
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $nome = mb_srtoupper($_POST["nome"]);
-        $identificacao = mb_srtoupper($_POST["identificacao"]);
-        $veiculo = mb_srtoupper($_POST["veiculo"]);
-        $placa = mb_srtoupper($_POST["placa"]);
-        $rua = mb_srtoupper($_POST["rua"]);
-        $numero = mb_srtoupper($_POST["numero"]);
-        
+        $nome = mb_strtoupper($_POST["nome"]);
+        $identificacao = mb_strtoupper($_POST["identificacao"]);
+        $veiculo = mb_strtoupper($_POST["veiculo"]);
+        $placa = mb_strtoupper($_POST["placa"]);
+        $rua = mb_strtoupper($_POST["rua"]);
+        $numero = mb_strtoupper($_POST["numero"]);
+
         if (isset($_POST['sit_escola']) && $_POST['sit_escola'] !== '') {
             $sit_escola = 1;
         } else {
             $sit_escola = 0;
         }
-        
+
         if (isset($_POST['sit_service']) && $_POST['sit_service'] !== '') {
             $sit_service = 1;
         } else {
             $sit_service = 0;
         }
-        
-    
-        $result = mysqli_query($conexao, "INSERT INTO entrada_saida (idcadastro, nome, identificacao, veiculo, placa, rua, numero, sit_escola, sit_service, entrada,saida) VALUES (NULL, '$nome', '$identificacao', '$veiculo', '$placa', '$rua', '$numero', '$sit_escola', '$sit_service', NOW(), NOW())");
+
+
+        $result = mysqli_query($conexao, "INSERT INTO entrada_saida (idcadastro, nome, identificacao, veiculo, placa, rua, numero, sit_escola, sit_service, entrada,saida) VALUES (NULL, '$nome', '$>
 
         if (!$result) {
             return("Erro ao inserir dados: " . mysqli_error($conexao));
         }
           // Redirecionar para uma página diferente pq toda vez que eu apertava f5 duplicava a inserção
         header("Location: leitor.php");
-         exit;
+
+                $result = $conexao->query($sql);
+
     }
-    
+
 
 
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Leitor de QR Code com Cadastro</title>
+    <title>SiSCAM - Leitor</title>
+    <link rel="icon" type="image/svg+xml" href="/imagens/qrcode.svg">
     <link rel="stylesheet" href="/css/leitor.css" />
 </head>
 
@@ -65,6 +76,13 @@
     <canvas id="canvas" hidden></canvas>
     <p id="outputData">Aponte para um QR code</p>
 
+    <!-- Modal -->
+    <!-- Modal -->
+    <div id="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="alerta"></span>
+        </div>
+    </div>
 
     <!-- Formulário de Cadastro -->
 
@@ -72,21 +90,21 @@
         <h3>Cadastro</h3>
         <form action=" " method="POST">
             <label for="nome" class="label-animado">Nome:</label>
-            <input type="text" id="nome" name="nome" style="text-transform: uppercase;" /><br /><br />
+            <input type="text" id="nome" name="nome" style="text-transform: uppercase;" required /><br /><br />
             <div id="sugestoes"></div>
 
             <label for="identificacao" class="label-animado">Identificação:</label>
-            <input type="text" id="identificacao" name="identificacao" style="text-transform: uppercase;" /><br /><br />
+            <input type="text" id="identificacao" name="identificacao" style="text-transform: uppercase;" required /><br /><br />
 
             <label for="veiculo" class="label-animado">Veículo:</label>
-            <input type="text" id="veiculo" name="veiculo" style="text-transform: uppercase;" /><br /><br />
+            <input type="text" id="veiculo" name="veiculo" style="text-transform: uppercase;"  /><br /><br />
 
             <label for="placa" class="label-animado">Placa:</label>
             <input type="text" id="placa" name="placa" style="text-transform: uppercase;" /><br /><br />
 
             <label for="rua">Escolha uma Rua:</label>
 
-            <select id="rua" name="rua">
+            <select id="rua" name="rua" required>
                 <option value="">Selecione a Rua...</option>
                 <option value="RUA CEL AQUILES PEDENEIRAS">RUA CEL AQUILES PEDENEIRAS</option>
                 <option value="RUA CEL AMAURY">RUA CEL AMAURY</option>
@@ -123,8 +141,7 @@
             </select><br /><br />
 
             <label for="numero" class="label-animado">Número:</label>
-            <input type="text" id="numero" name="numero" style="text-transform: uppercase;" /><br /><br />
-
+            <input type="text" id="numero" name="numero" style="text-transform: uppercase;" required /><br /><br />
             <div id="check">
                 <label for="sit_escola">Cadastro Escolar:</label> <br />
                 <input type="checkbox" id="sit_escola" name="sit_escola" value="true" /><br /><br />
@@ -135,6 +152,8 @@
 
             <br><br><a id="saida" href="lista_registro.php"> Saida</a> <br /><br />
             <a id="relatorio" href="relatorio.php"> Relatório</a> <br /><br />
+            <a id="servicebutton" href="service.php"> Serviços</a> <br /><br />
+
 
             <input type="hidden" name="token" value="<?php echo uniqid(); ?>" />
             <button type="submit" id="register" nome="submit">Registrar Entrada</button>
@@ -142,18 +161,34 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="/js/leitor.js"></script>
+    <script src="leitor.js"></script>
+    <script src="alerta.js"></script>
 
+
+    </script>
     <script>
-    // Função para redirecionar para a página do gerador
-    document
-        .getElementById("irparagerar")
-        .addEventListener("click", function() {
-            // Substitua pelo nome do seu arquivo
-            window.location.href = "gen2.php";
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        function verificarAtrasos() {
+            fetch('verificar_atraso.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let mensagem = "Os seguintes cadastros estão atrasados:\n";
+                        data.forEach(atraso => {
+                            mensagem += `- Nome: ${atraso.nome}, Identificação: ${atraso.identificacao}\n`;
+                        });
+                        alert(mensagem);
+                    }
+                })
+                .catch(error => console.error('Erro ao verificar atrasos:', error));
+        }
+    
+        // Verifica atrasos a cada 5 segundos
+        setInterval(verificarAtrasos, 5000);
+    });
     </script>
     
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
         const checkboxSituacao = document.getElementById("sit_escola");
@@ -172,6 +207,15 @@
     });
     </script>
 
+    <script>
+    // Função para redirecionar para a página do gerador
+    document
+        .getElementById("irparagerar")
+        .addEventListener("click", function() {
+            // Substitua pelo nome do seu arquivo
+            window.location.href = "gen2.php";
+        });
+    </script>
 
     <script>
     // cadastra individualmente cada informação ao apertar "cadastrar"
@@ -230,7 +274,6 @@
         }
     });
     </script>
-
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Sugestões e autocomplete dos outros campos
@@ -324,3 +367,5 @@
 </body>
 
 </html>
+
+
